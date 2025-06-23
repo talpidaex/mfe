@@ -65,3 +65,12 @@ Shared dependencies (like React) are marked as singleton to prevent duplication.
 
 Each app is independently deployable and maintainable.
 ```
+
+## 🤖 Continuous Integration and Deployment
+
+GitHub Actions has been integrated into this project to automate the CI/CD pipeline. It ensures that:
+
+- Code is linted and tested on every push.
+- Builds are created and deployed automatically.
+
+Refer to the `.github/workflows` directory for configuration details.
