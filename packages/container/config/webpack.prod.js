@@ -17,7 +17,15 @@ const prodConfig = {
       remotes: {
         marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`,
       },
-      shared: packageJson.dependencies,
+      shared: {
+        ...packageJson.dependencies,
+        "@material-ui/core": {
+          singleton: true,
+        },
+        "@material-ui/style": {
+          singleton: true,
+        },
+      },
     }),
   ],
 };

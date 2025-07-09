@@ -16,7 +16,15 @@ const prodConfig = {
       exposes: {
         "./MarketingApp": "./src/bootstrap.js",
       },
-      shared: packageJson.dependencies,
+      shared: {
+        ...packageJson.dependencies,
+        "@material-ui/core": {
+          singleton: true,
+        },
+        "@material-ui/style": {
+          singleton: true,
+        },
+      },
     }),
   ],
 };
