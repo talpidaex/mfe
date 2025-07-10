@@ -2,10 +2,25 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createMemoryHistory } from "history";
 import App from "./App";
+import { createBrowserHistory } from "history/cjs/history.min";
 // Mount function to start up the app
-const mount = (element) => {
-  const history = createMemoryHistory();
+const mount = (element, { onNavigate, defaultHistory }) => {
+  const history = defaultHistory || createMemoryHistory();
+
+  if (onNavigate) {
+    history.listen(onNavigate);
+  }
+
   ReactDOM.render(<App history={history} />, element);
+
+  return {
+    onParentNavigate: ({ pathname: hostPathname }) => {
+      if (history.location.pathname !== hostPathname) {
+        console.log(`MarketingApp: ${history.location.pathname} Hostname -> ${hostPathname}`);
+        history.push(hostPathname);
+      }
+    },
+  };
 };
 
 // If we are in development and in isolation
@@ -14,7 +29,7 @@ if (process.env.NODE_ENV === "development") {
   const devRoot = document.querySelector("#_marketing-dev-root");
 
   if (devRoot) {
-    mount(devRoot);
+    mount(devRoot, { defaultHistory: createBrowserHistory() });
   }
 }
 
