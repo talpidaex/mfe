@@ -1,27 +1,31 @@
-# 🌐 Microfrontend Architecture with Webpack
+# 🌐 Microfrontend Architecture with Webpack & Module Federation
 
-This repository demonstrates a simple **Microfrontend (MFE)** architecture built using **Webpack 5** and **Module Federation**. The goal is to create independently deployable frontend applications that can be composed into a single UI.
+This repository demonstrates a modular **Microfrontend (MFE)** architecture using **Webpack 5** and **Module Federation**. Each microfrontend is independently developed, built, and deployed, then composed into a single UI via the container app.
 
 ---
 
 ## 🛠️ Tech Stack
 
 - ⚙️ Webpack 5 + Module Federation
-- ⚛️ React & Vue (for individual microfrontends)
-- 📦 JavaScript / TypeScript (configurable)
+- ⚛️ React (container, auth, marketing) & Vue (dashboard)
+- 📦 JavaScript (ES6+)
+- 🎨 Material-UI (React apps)
+- 📊 PrimeVue, Chart.js (dashboard)
 - 🔧 Webpack Dev Server (for local development)
 
 ---
 
 ## 📁 Project Structure
 
-/root
-├── container # Main host application
-├── auth
-├── marketing
-├── dashboard # mfe - Vue
+```
+packages/
+  container/   # Main host application (React)
+  auth/        # Authentication microfrontend (React)
+  marketing/   # Marketing microfrontend (React)
+  dashboard/   # Dashboard microfrontend (Vue)
+```
 
-Each microfrontend is developed and served independently, then integrated by the container application using Module Federation.
+Each microfrontend is developed and served independently, then integrated by the container app using Module Federation.
 
 ---
 
@@ -29,48 +33,57 @@ Each microfrontend is developed and served independently, then integrated by the
 
 ### 1. Install Dependencies
 
-Run the following for each project (`container`, `mfe-auth`, `mfe-marketing`, `mfe-dashboard`):
+Install dependencies for each microfrontend:
 
 ```bash
-npm install
+cd packages/container && npm install
+cd ../auth && npm install
+cd ../marketing && npm install
+cd ../dashboard && npm install
+```
 
+### 2. Start All Applications
 
-2. Start All Applications
-Each project should be started in its own terminal tab:
+Start each app in its own terminal tab:
 
-# Start container
-cd container
-npm run start
+```bash
+# Start container (host)
+cd packages/container && npm run start
 
 # Start Auth microfrontend
-cd mfe-auth
-npm run start
+cd packages/auth && npm run start
 
 # Start Marketing microfrontend
-cd mfe-marketing
-npm run start
+cd packages/marketing && npm run start
 
-# Start Dashboard microfrontend
-cd mfe-dashboard
-npm run start
-
-
-
-🔗 Module Federation Overview
-The container app consumes remote components from mfe-header and mfe-footer.
-
-Remote apps expose their components via Webpack's ModuleFederationPlugin.
-
-Shared dependencies (like React) are marked as singleton to prevent duplication.
-
-Each app is independently deployable and maintainable.
+# Start Dashboard microfrontend (Vue)
+cd packages/dashboard && npm run start
 ```
+
+---
+
+## 🔗 Module Federation Overview
+
+- The **container** app consumes remote components from the `auth`, `marketing`, and `dashboard` microfrontends.
+- Each remote app exposes its components via Webpack's `ModuleFederationPlugin`.
+- Shared dependencies (like React) are marked as `singleton` to prevent duplication and version conflicts.
+- Each app is independently deployable and maintainable.
+
+### Main Dependencies
+
+**container, auth, marketing (React):**
+
+- react, react-dom, react-router-dom, @material-ui/core, @material-ui/icons
+
+**dashboard (Vue):**
+
+- vue, primevue, primeicons, chart.js
 
 ## 🤖 Continuous Integration and Deployment
 
-GitHub Actions has been integrated into this project to automate the CI/CD pipeline. It ensures that:
+GitHub Actions is used for CI/CD:
 
-- Code is linted and tested on every push.
-- Builds are created and deployed automatically.
+- Linting and testing on every push
+- Automatic build and deployment
 
-Refer to the `.github/workflows` directory for configuration details.
+See `.github/workflows` for details.

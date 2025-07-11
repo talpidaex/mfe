@@ -1,10 +1,14 @@
-import { merge } from "webpack-merge";
-import ModuleFederationPlugin from "webpack/lib/container/ModuleFederationPlugin";
-import commonConfig from "./webpack.common.js";
-import packageJSON from "../package.json";
+const { merge } = require("webpack-merge");
+const commonConfig = require("./webpack.common");
+const packageJSON = require("../package.json");
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
 const devConfig = {
   mode: "development",
+  entry: "./src/index.js",
+  output: {
+    publicPath: "http://localhost:8082/",
+  },
   devServer: {
     port: 8082,
     historyApiFallback: true,
@@ -15,7 +19,7 @@ const devConfig = {
       name: "auth",
       filename: "remoteEntry.js",
       exposes: {
-        //TODO
+        "./AuthApp": "./src/bootstrap",
       },
       shared: packageJSON.dependencies,
     }),

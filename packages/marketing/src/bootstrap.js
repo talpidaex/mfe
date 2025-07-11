@@ -4,8 +4,12 @@ import { createMemoryHistory } from "history";
 import App from "./App";
 import { createBrowserHistory } from "history/cjs/history.min";
 // Mount function to start up the app
-const mount = (element, { onNavigate, defaultHistory }) => {
-  const history = defaultHistory || createMemoryHistory();
+const mount = (element, { onNavigate, defaultHistory, initialPath }) => {
+  const history =
+    defaultHistory ||
+    createMemoryHistory({
+      initialEntries: [initialPath],
+    });
 
   if (onNavigate) {
     history.listen(onNavigate);
@@ -16,7 +20,6 @@ const mount = (element, { onNavigate, defaultHistory }) => {
   return {
     onParentNavigate: ({ pathname: hostPathname }) => {
       if (history.location.pathname !== hostPathname) {
-        console.log(`MarketingApp: ${history.location.pathname} Hostname -> ${hostPathname}`);
         history.push(hostPathname);
       }
     },
