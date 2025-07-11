@@ -87,3 +87,17 @@ GitHub Actions is used for CI/CD:
 - Automatic build and deployment
 
 See `.github/workflows` for details.
+
+---
+
+## 🚀 Deployment
+
+All microfrontends and the container app are deployed using **Amazon S3 Buckets** for static file hosting and **Amazon CloudFront** as the CDN/distribution layer.
+
+**Deployment Steps:**
+
+1. Build each microfrontend and the container app using `npm run build` in their respective directories.
+2. Upload the build output (typically the `dist` or `build` folder) to the corresponding S3 bucket.
+3. Invalidate the CloudFront cache to ensure users receive the latest version.
+
+This setup provides fast, secure, and scalable global delivery for all frontend assets.
